@@ -24,3 +24,7 @@ __pycache__/
 .env.*
 !.env.example
 credentials/
+
+# Local TypeScript and Tauri build metadata.
+*.tsbuildinfo
+/apps/desktop/src-tauri/gen/

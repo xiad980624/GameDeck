@@ -5,6 +5,7 @@ import {nextSession} from './launchState';
 import { homeGames } from './homeOrder';
 import { DEMO_GAMES } from './demo';
 import { spaceGames } from './libraryScope';
+import { playUiSound } from './uiSounds';
 
 interface DeckState {
   sessions:Record<string,SessionInfo>;
@@ -36,7 +37,7 @@ interface DeckState {
   setAcceleratorProvider: (provider:'uu'|'xunyou')=>void;
   setPage: (page: Page) => void;
   setGames: (games: Game[], preserveFocus?: boolean) => void;
-  setFocus: (id: string | null, source?: 'pointer' | 'navigation') => void;
+  setFocus: (id: string | null, source?: 'pointer' | 'navigation', audible?: boolean) => void;
   showDetail: (id: string) => void;
   closeDetail: () => void;
   setQuery: (query: string) => void;
@@ -91,7 +92,11 @@ export const useDeck = create<DeckState>((set, get) => ({
     const stableGames=next.length===get().games.length&&next.every((game,index)=>game===get().games[index])?get().games:next;
     set({games:stableGames,libraryLoaded:true,demo:!actual,newGameIds,focusedId,...(selectNewGame?{focusSource:'navigation' as const}:{})});
   },
-  setFocus(focusedId, focusSource = 'navigation') { if (focusedId !== get().focusedId || focusSource !== get().focusSource) set({ focusedId, focusSource }); },
+  setFocus(focusedId, focusSource = 'navigation', audible = false) {
+    const changed = focusedId !== get().focusedId;
+    if (changed || focusSource !== get().focusSource) set({ focusedId, focusSource });
+    if (audible && changed && focusedId) playUiSound('select');
+  },
   showDetail(id) { if(!spaceGames(get().games,get().hiddenSpace).some(game=>game.id===id))return; get().acknowledgeGame(id); set({ previousPage: get().page, page: 'details', detailId: id, focusedId: id }); },
   closeDetail() { set({ page: get().previousPage, detailId: null }); },
   setQuery(query) { set({ query }); },

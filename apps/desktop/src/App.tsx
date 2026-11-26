@@ -216,8 +216,8 @@ export default function App() {
       if (action === 'MENU') return switchPage('settings');
       const games = homeGames(state.games,state.newGameIds);
       const index = Math.max(0, games.findIndex(g => g.id === state.focusedId));
-      if (action === 'RIGHT' || action === 'DOWN') state.setFocus(games[Math.min(games.length - 1, index + 1)]?.id || null);
-      if (action === 'LEFT' || action === 'UP') state.setFocus(games[Math.max(0, index - 1)]?.id || null);
+      if (action === 'RIGHT' || action === 'DOWN') state.setFocus(games[Math.min(games.length - 1, index + 1)]?.id || null, 'navigation', true);
+      if (action === 'LEFT' || action === 'UP') state.setFocus(games[Math.max(0, index - 1)]?.id || null, 'navigation', true);
       if (action === 'CONFIRM') { const id = state.focusedId ?? games[0]?.id; if (id) state.showDetail(id); }
       if (action === 'FAVORITE') { const g = state.games.find(g => g.id === state.focusedId); if (g) void toggleFavorite(g); }
       if (action === 'SEARCH') { switchPage('library'); requestAnimationFrame(() => document.getElementById('library-search')?.focus()); }
@@ -246,7 +246,7 @@ export default function App() {
       if (action === 'RIGHT') next = Math.min(filtered.length - 1, idx + 1);
       if (action === 'UP') { if(idx<cols){document.querySelector<HTMLElement>('.platform-tabs [aria-selected=true]')?.focus();return;} next = Math.max(0, idx - cols); }
       if (action === 'DOWN') next = Math.min(filtered.length - 1, idx + cols);
-      if (['UP', 'DOWN', 'LEFT', 'RIGHT'].includes(action)) { if (filtered[next]) state.setFocus(filtered[next].id); return; }
+      if (['UP', 'DOWN', 'LEFT', 'RIGHT'].includes(action)) { if (filtered[next]) state.setFocus(filtered[next].id, 'navigation', true); return; }
       if (action === 'CONFIRM' && filtered[idx]) state.showDetail(filtered[idx].id);
       if (action === 'FAVORITE' && filtered[idx]) void toggleFavorite(filtered[idx]);
       if (action === 'MENU') {

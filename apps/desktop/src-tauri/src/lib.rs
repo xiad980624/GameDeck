@@ -1,4 +1,5 @@
 mod native_gamepad;
+mod ui_audio;
 mod lobby_focus;
 mod window_shortcut;
 use window_shortcut::toggle_lobby_fullscreen;
@@ -597,7 +598,7 @@ pub fn run() {
             let handle=app.handle().clone();tauri::async_runtime::spawn(async move{tokio_wait_startup(handle).await;});
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![native_gamepad_status,toggle_lobby_fullscreen,repair_epic_artwork,epic_artwork_status,epic_account_status,open_epic_login,connect_epic_account,sync_epic_library,disconnect_epic_account,install_epic_game,repair_titles,startup_library,startup_mark,startup_probe_result,refresh_game_status,card_motion_candidates,choose_motion_card,hero_display_path,background_candidates,choose_background,sgdb_key_status,set_sgdb_key,alpha_key_status,set_alpha_key,
+        .invoke_handler(tauri::generate_handler![ui_audio::play_ui_sound,native_gamepad_status,toggle_lobby_fullscreen,repair_epic_artwork,epic_artwork_status,epic_account_status,open_epic_login,connect_epic_account,sync_epic_library,disconnect_epic_account,install_epic_game,repair_titles,startup_library,startup_mark,startup_probe_result,refresh_game_status,card_motion_candidates,choose_motion_card,hero_display_path,background_candidates,choose_background,sgdb_key_status,set_sgdb_key,alpha_key_status,set_alpha_key,
             display_agent_status,display_agent_config,set_display_agent_config,save_display_agent_config,display_agent_pause,autostart_status,install_autostart,uninstall_autostart,
             open_artwork_website, artwork_choices, prepare_artwork, discard_artwork, commit_artwork, improve_background, refresh_promo_backgrounds, list_accelerators, set_accelerator_path, open_accelerator, list_games, open_platform, scan_games, sync_playtime, steam_accounts, select_steam_account, sync_steam_library, install_steam_game, add_manual_game, scan_manual_folder, set_hidden, set_favorite, launch_game, scrape_artwork, search_artwork_candidates, confirm_artwork_match, set_custom_artwork, reset_custom_artwork, list_game_screenshots
         ])

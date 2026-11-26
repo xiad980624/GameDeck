@@ -9,14 +9,14 @@ import { Artwork } from './Artwork';
 import { updateLabel,updatePending } from '../lib/platforms';
 
 export const GameCard = memo(function GameCard({ game, selected, onSelect, onOpen, mode = 'wide', active=true }: {
-  game: Game; active?:boolean; selected: boolean; onSelect: (id: string, source?: 'pointer' | 'navigation') => void; onOpen: (id: string) => void; mode?: 'wide' | 'poster';
+  game: Game; active?:boolean; selected: boolean; onSelect: (id: string, source?: 'pointer' | 'navigation', audible?: boolean) => void; onOpen: (id: string) => void; mode?: 'wide' | 'poster';
 }) {
   const isNew=useDeck(s=>s.newGameIds.includes(game.id));
   useEffect(()=>{if(!active||!selected)return;const timer=window.setTimeout(()=>{void prepareHero(game).catch(()=>undefined);},120);return()=>window.clearTimeout(timer);},[active,selected,game.id,game.hero]);
   return <button
     type="button"
     className={`game-card ${mode} ${selected ? 'is-selected' : ''}`}
-    onPointerMove={e => { if (e.pointerType === 'mouse'&&realPointerMove(e)&&useInputDevice.getState().mode!=='gamepad') onSelect(game.id, 'pointer'); }} onFocus={() => onSelect(game.id)} onClick={() => onOpen(game.id)}
+    onPointerMove={e => { if (e.pointerType === 'mouse'&&realPointerMove(e)&&useInputDevice.getState().mode!=='gamepad') onSelect(game.id, 'pointer', true); }} onFocus={() => onSelect(game.id, 'navigation', true)} onClick={() => onOpen(game.id)}
     aria-label={`打开 ${game.name} 详情`}
     tabIndex={selected ? 0 : -1}
     data-game-id={game.id}

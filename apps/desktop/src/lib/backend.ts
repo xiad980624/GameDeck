@@ -1,6 +1,7 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
+import { playUiSound } from './uiSounds';
 import type { Game, ScanReport, SessionInfo } from './types';
 
 export const desktopMode = isTauri();
@@ -110,6 +111,7 @@ export const backend = {
     if (desktopMode && !game.installed && game.platform === 'steam') { await invoke('install_steam_game',{gameId:game.id}); return { session_id:sessionId,game_id:game.id,state:'launcher_started',timestamp:new Date().toISOString(),message:'已在 Steam 打开安装'}; }
     if(desktopMode&&!game.installed&&game.platform==='epic'){await invoke('install_epic_game',{gameId:game.id});return {session_id:sessionId,game_id:game.id,state:'launcher_started',timestamp:new Date().toISOString(),message:'已在 Epic 打开安装'};}
     if (!desktopMode || !game.launch_installation_id) throw new Error('此条目为界面演示数据，不能启动。请先扫描 Steam 或导入本地 EXE。');
+    playUiSound('launch');
     return invoke<SessionInfo>('launch_game', { installationId: game.launch_installation_id, sessionId, viaController, followDisplay: localStorage.getItem('gamedeck-follow-display')!=='off' });
   },
   async subscribeSession(cb: (s: SessionInfo) => void): Promise<() => void> {
