@@ -1,0 +1,30 @@
+[package]
+name = "gamedeck-desktop"
+version = "0.1.0"
+description = "Controller-first full-screen Windows game library"
+authors = ["GameDeck"]
+edition = "2021"
+
+[lib]
+name = "gamedeck_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2.12", features = ["custom-protocol", "protocol-asset", "tray-icon", "image-png"] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+chrono = { version = "0.4", features = ["clock"] }
+uuid = { version = "1", features = ["v4"] }
+game-core = { path = "../../../crates/game-core" }
+game-discovery = { path = "../../../crates/game-discovery" }
+game-storage = { path = "../../../crates/game-storage" }
+game-launcher = { path = "../../../crates/game-launcher" }
+
+game-metadata = { path = "../../../crates/game-metadata" }
+serde_json = "1"
+
+[target.'cfg(windows)'.dependencies]
+webview2-com = "0.39"

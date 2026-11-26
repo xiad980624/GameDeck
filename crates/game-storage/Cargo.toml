@@ -1,0 +1,17 @@
+[package]
+name = "game-storage"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+game-core = { path = "../game-core" }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "sqlite", "migrate", "macros"] }
+chrono = { version = "0.4", features = ["clock"] }
+uuid = { version = "1", features = ["v4"] }
+game-metadata = { path = "../game-metadata" }
+
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "sync"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread"] }
