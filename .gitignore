@@ -1,0 +1,26 @@
+node_modules/
+dist/
+target/
+target-hidden/
+*.log
+.DS_Store
+.vite/
+.env
+.vscode/
+.runtime/
+release/data/
+
+# Source and SQL migrations are tracked; local data and reports stay local.
+/docs/
+/README.md
+/.workbuddy/
+/release/
+__pycache__/
+*.py[cod]
+*.db
+*.db-wal
+*.db-shm
+*.zip
+.env.*
+!.env.example
+credentials/

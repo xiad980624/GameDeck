@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = [
+  "apps/desktop/src-tauri",
+  "crates/game-core",
+  "crates/game-discovery",
+  "crates/game-storage",
+  "crates/game-launcher",
+  "crates/game-metadata"
+]

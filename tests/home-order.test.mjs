@@ -1,0 +1,13 @@
+import {readFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+const require=createRequire(new URL('../apps/desktop/package.json',import.meta.url));
+const ts=require('typescript');const exports={};
+vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../apps/desktop/src/lib/homeOrder.ts',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,{exports});
+const {homeGames}=exports;
+const game=(id,added,last=null)=>({id,name:id,added_at:added,last_played_at:last});
+test('unseen additions lead even if a different game was just played',()=>{const games=[game('played','2026-01-01','2026-11-21'),game('new','2026-11-20')];assert.equal(homeGames(games,['new'])[0].id,'new');assert.equal(games[0].id,'played');});
+test('multiple additions use import time and normal games use last activity',()=>{const games=[game('older-new','2026-11-19'),game('newest','2026-11-20'),game('active','2026-01-01','2026-11-21'),game('never-played','2026-11-18')];assert.equal(homeGames(games,['older-new','newest']).map(g=>g.id).join(','),'newest,older-new,active,never-played');});
+test('recently added games without playtime are not buried',()=>{assert.equal(homeGames([game('old','2026-01-01','2026-11-01'),game('new','2026-11-21')])[0].id,'new');});

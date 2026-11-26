@@ -1,0 +1,13 @@
+{
+  "name": "gamedeck-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "dev": "pnpm --filter @gamedeck/desktop tauri:dev",
+    "web": "pnpm --filter @gamedeck/desktop dev",
+    "build": "pnpm --filter @gamedeck/desktop tauri:build",
+    "build:exe": "pnpm --filter @gamedeck/desktop tauri:build --no-bundle",
+    "check": "pnpm --filter @gamedeck/desktop check"
+  }
+}

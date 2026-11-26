@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050814" />
+  <title>GameDeck</title>
+<style>
+html,body,#root{margin:0;min-height:100%;background:#11172d;color:#edf2ff;font-family:Segoe UI,sans-serif}
+.startup-shell{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:radial-gradient(ellipse at 50% 30%,#202b4a,#11172d 75%)}
+.startup-shell strong{font-size:32px;letter-spacing:2px}.startup-ring{width:22px;height:22px;border:2px solid #445371;border-top-color:#b1c9ff;border-radius:50%;animation:startup-spin .8s linear infinite}@keyframes startup-spin{to{transform:rotate(360deg)}}
+</style></head>
+<body><div id="root"><main class="startup-shell"><strong>GameDeck</strong><span class="startup-ring"></span></main></div><script type="module" src="/src/main.tsx"></script></body>
+</html>
