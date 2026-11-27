@@ -13,6 +13,7 @@ import { useDeck } from '../lib/store';
 import { syncWindowState, toggleFullscreen, useWindowState } from '../lib/window';
 import { InputHints } from './InputHints';
 import { useInputDevice } from '../lib/inputDevice';
+import { playUiSound, setUiSoundsEnabled, uiSoundsEnabled } from '../lib/uiSounds';
 
 export function Settings({ onScan, onImport }: { onScan: () => void; onImport: () => void }) {
   const inputMode = useInputDevice(s => s.mode);
@@ -25,6 +26,7 @@ export function Settings({ onScan, onImport }: { onScan: () => void; onImport: (
   const notify = useDeck(s => s.notify);
   const tabs = ['游戏库与账号','素材与刮削','显示','手柄与操作','关于'];
   const [tab, setTab] = useState(0);
+  const [soundsEnabled, setSoundsEnabled] = useState(uiSoundsEnabled);
   const [motionEnabled,setMotionEnabled]=useState(()=>localStorage.getItem('gamedeck-motion')==='on');
   const [forceBorderless,setForceBorderless]=useState(true);
   const [alphaKey,setAlphaKey]=useState('');
@@ -189,6 +191,8 @@ export function Settings({ onScan, onImport }: { onScan: () => void; onImport: (
       </>}
       {tab===3 && <>
         <h2>手柄与操作</h2>
+        <div className="setting-row"><div><h3>操作音效</h3><p>切换游戏时轻响，发出启动请求时播放确认音。关闭后保持安静。</p></div><button className={`toggle ${soundsEnabled?'on':''}`} role="switch" aria-label="操作音效" aria-checked={soundsEnabled} onClick={()=>{const value=!soundsEnabled;setUiSoundsEnabled(value);setSoundsEnabled(value);}}><span/></button></div>
+        <div className="setting-row"><h3>音效试听</h3><div className="setting-buttons"><button className="btn btn-outline" disabled={!soundsEnabled} onClick={()=>playUiSound('select')}>试听切换</button><button className="btn btn-outline" disabled={!soundsEnabled} onClick={()=>playUiSound('launch')}>试听启动</button></div></div>
         <div className="setting-row"><h3>高亮焦点动画</h3><button aria-label="高亮焦点动画" className={`toggle ${accentEnabled?'on':''}`} onClick={toggleFocusFx} role="switch" aria-checked={accentEnabled}><span/></button></div>
         <div className="setting-row"><h3>当前输入设备</h3><span className="setting-value">{inputMode==='gamepad'?<Gamepad2 size={18}/>:<Keyboard size={18}/>} {inputMode==='gamepad'?'手柄':'键盘与鼠标'}</span></div>
         <div className="setting-row"><h3>操作提示</h3><span className="setting-value">随实际输入自动切换</span></div>
