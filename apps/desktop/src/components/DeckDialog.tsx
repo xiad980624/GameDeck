@@ -11,12 +11,12 @@ export function DeckDialog({title,onClose,busy=false,children}:{title:string;onC
   useEffect(()=>{
     const before=document.activeElement as HTMLElement|null;
     ref.current?.querySelector<HTMLElement>('button:not(:disabled)')?.focus();
-    const nodes=()=>Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled)')??[]).filter(node=>node.getClientRects().length>0);
+    const nodes=()=>Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),summary')??[]).filter(node=>node.getClientRects().length>0);
     const move=(step:number)=>{const list=nodes();const index=list.indexOf(document.activeElement as HTMLElement);list[(index+step+list.length)%list.length]?.focus();};
     const key=(event:KeyboardEvent)=>{
       if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();if(!working.current)close.current();}
       if(event.key==='Tab'){event.preventDefault();event.stopPropagation();move(event.shiftKey?-1:1);}
-      if(['ArrowUp','ArrowDown'].includes(event.key)&&!(event.target as HTMLElement)?.matches('input,select')){event.preventDefault();event.stopPropagation();move(event.key==='ArrowDown'?1:-1);}
+      if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)&&!(event.target as HTMLElement)?.matches('input,textarea,select,[role=combobox]')){event.preventDefault();event.stopPropagation();move(event.key==='ArrowDown'||event.key==='ArrowRight'?1:-1);}
     };
     const pad=(event:Event)=>{
       event.preventDefault(); const action=(event as CustomEvent<InputAction>).detail;
