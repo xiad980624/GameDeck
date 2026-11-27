@@ -225,11 +225,11 @@ export default function App() {
     }
     if (state.page === 'details') {
       const g = state.games.find(g => g.id === state.detailId);
-      const nodes=Array.from(document.querySelectorAll<HTMLElement>('.details-actions button:not(:disabled),.detail-accelerator [role=combobox]'));
+      const nodes=Array.from(document.querySelectorAll<HTMLElement>('.details-actions button:not(:disabled)'));
       const index=nodes.indexOf(document.activeElement as HTMLElement);
       if(action==='UP'||action==='LEFT'){nodes[Math.max(0,index-1)]?.focus();return;}
       if(action==='DOWN'||action==='RIGHT'){nodes[Math.min(nodes.length-1,index+1)]?.focus();return;}
-      if(action==='MENU'&&g){state.openAccelerators(gameAccelerator(g.id)||'uu',g.id);return;}
+      if(action==='MENU'&&g){const more=document.querySelector<HTMLButtonElement>('[data-detail-more]');more?.focus();more?.click();return;}
       if (action === 'CONFIRM' && g) {if(index>=0)nodes[index].click();else void launch(g);}
       if (action === 'FAVORITE' && g) void toggleFavorite(g);
       if (action === 'PAGE_PREV' || action === 'PAGE_NEXT') state.closeDetail();
